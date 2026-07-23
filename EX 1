@@ -1,0 +1,20 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+df = pd.DataFrame({
+    "Temperature": [20,22,23,24,26,28,30,31,32,35],
+    "Sales": [60,65,60,71,77,76,83,85,86,89]
+    })
+X = df[["Temperature"]]
+Y = df["Sales"]
+model = LinearRegression()
+model.fit(X, Y)
+temp = pd.DataFrame({"Temperature": [35]})
+print("Predicted Sales:", model.predict(temp)[0])
+plt.scatter(X, Y, color="red")
+plt.plot(X, model.predict(X), color="green")
+plt.xlabel("Temperature")
+plt.ylabel("Sales")
+plt.title("Linear Regression")
+plt.show()
+ 
