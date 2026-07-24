@@ -1,0 +1,32 @@
+from sklearn.linear_model import LogisticRegression 
+import numpy as np 
+import matplotlib.pyplot as plt 
+x=[ 
+[25,22,75], 
+[30,25,80], 
+[35,28,85], 
+[40,30,90], 
+[22,20,70], 
+[28,24,78], 
+[45,32,95], 
+[50,35,100] 
+] 
+y=[0,1,1,1,0,0,1,1] 
+model=LogisticRegression() 
+model.fit(x,y) 
+age=int(input("enter age:")) 
+bmi=int(input("enter BMI:")) 
+bp=int(input("enter Blood Pressure:")) 
+prediction=model.predict([[age,bmi,bp]]) 
+if prediction[0]==1: 
+ print("prediction:patient may have the disease") 
+else: 
+ print("prediction:patient is healthy") 
+x=np.linspace(-10,10,100) 
+y=1/(1+np.exp(-x)) 
+plt.plot(x,y) 
+plt.title("Logistic Regression(Sigmoid curve)") 
+plt.xlabel("input") 
+plt.ylabel("probability") 
+plt.grid(True) 
+plt.show() 
