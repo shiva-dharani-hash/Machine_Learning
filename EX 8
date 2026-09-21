@@ -1,0 +1,114 @@
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.svm import SVC
+
+from sklearn.metrics import accuracy_score
+
+x = np.array([
+
+[20, 110],
+
+[22, 115],
+
+[25, 120],
+
+[28, 118],
+
+[30, 125],
+
+[32, 128],
+
+[35, 130],
+
+[38, 135],
+
+[45, 145],
+
+[48, 150],
+
+[50, 155],
+
+[52, 160],
+
+[55, 165],
+
+[58, 170],
+
+[60, 175],
+
+[62, 180]
+
+])
+
+y = np.array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1])
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=42)
+
+model = SVC(kernel="linear")
+
+model.fit(x_train, y_train)
+
+y_pred = model.predict(x_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("SVM classification")
+
+print("-----------------")
+
+print("Actual values:", y_test.astype(int))
+
+print("Predicted values:", y_pred.astype(int))
+
+print("Accuracy:", accuracy * 100, "%")
+
+print("\nEnter new patient details")
+
+age = float(input("Enter Age: "))
+
+bp = float(input("Enter Blood Pressure: "))
+
+new_patient = np.array([[age, bp]])
+
+prediction = model.predict(new_patient)
+
+if prediction[0] == 1:
+
+print("Prediction: Condition")
+
+else:
+
+print("Prediction: No condition")
+
+plt.scatter(x[y == 0, 0], x[y == 0, 1], label="No condition")
+
+plt.scatter(x[y == 1, 0], x[y == 1, 1], label="Condition")
+
+
+w = model.coef_[0]
+
+b = model.intercept_[0]
+
+x_values = np.linspace(x[:, 0].min(), x[:, 0].max(), 100)
+
+y_values = -(w[0] * x_values + b) / w[1]
+
+plt.plot(x_values, y_values, label="Decision Boundary")
+
+plt.scatter(age, bp, marker="*", s=200, label="New patient", color="red")
+
+plt.xlabel("Age")
+
+plt.ylabel("Blood Pressure")
+
+plt.title("SVM Classification")
+
+plt.legend()
+
+plt.grid(True)
+
+plt.show()
