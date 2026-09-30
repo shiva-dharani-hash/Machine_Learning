@@ -1,0 +1,46 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.metrics import accuracy_score
+df = pd.read_csv("ex10_100_patients.csv")
+X = df[["BMI", "BloodPressure", "Age"]]
+y = df["Diabetes"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+model = AdaBoostClassifier(
+    n_estimators=5,
+    random_state=42
+)
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+
+
+print("Actual:", list(y_test))
+print("Predicted:", list(y_pred))
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Accuracy:", accuracy)
+print("Accuracy Percentage:", accuracy * 100, "%")
+print("\nEnter Patient Details")
+
+bmi = float(input("BMI: "))
+blood_pressure = float(input("Blood Pressure: "))
+age = float(input("Age: "))
+patient = pd.DataFrame({
+    "BMI": [bmi],
+    "BloodPressure": [blood_pressure],
+    "Age": [age]
+})
+prediction = model.predict(patient)
+
+if prediction[0] == 1:
+    print("Prediction: Diabetes (Yes)")
+else:
+    print("Prediction: Diabetes (No)")
