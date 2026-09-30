@@ -1,0 +1,46 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+df = pd.read_csv("ex9_100_students.csv")
+X = df.drop("Result", axis=1)
+y = df["Result"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.25,
+    random_state=42,
+    stratify=y
+)
+model = RandomForestClassifier(
+    n_estimators=5,
+    random_state=42
+)
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+
+
+print("Actual:", list(y_test))
+print("Predicted:", list(y_pred))
+
+
+print("\nEnter Student Details")
+
+attendance = float(input("Attendance: "))
+study_hours = float(input("Study Hours: "))
+internal_marks = float(input("Internal Marks: "))
+participation = int(input("Participation (1=Yes, 0=No): "))
+
+
+student = pd.DataFrame({
+    "Attendance": [attendance],
+    "Studyhours": [study_hours],
+    "Internal_marks": [internal_marks],
+    "Participation": [participation]
+})
+
+
+prediction = model.predict(student)
+
+print("\nPrediction:", prediction[0])
